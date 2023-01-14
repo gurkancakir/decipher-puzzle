@@ -3,6 +3,7 @@ package com.luxoft.decipherpuzzle.core.expressions;
 
 import com.luxoft.decipherpuzzle.core.exception.InputNotAcceptException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class MultiExpression extends AbstractExpression {
     private List<Expression> expressionList;
 
     @Autowired
-    private SingleExpression singleExpression;
+    private ApplicationContext context;
 
     public MultiExpression() {
         this.clear();
@@ -55,7 +56,7 @@ public class MultiExpression extends AbstractExpression {
         this.addInputExpression(exp);
         String[] expressions = exp.split(";");
         for (String expression : expressions) {
-            Expression ex = singleExpression.createExpression(expression);
+            Expression ex = context.getBean(SingleExpression.class).createExpression(expression);
             this.addExpression(ex);
         }
         return this;

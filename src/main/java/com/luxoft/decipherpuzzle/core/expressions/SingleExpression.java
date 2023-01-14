@@ -5,6 +5,8 @@ import com.luxoft.decipherpuzzle.core.entity.Element;
 import com.luxoft.decipherpuzzle.core.entity.Variable;
 import com.luxoft.decipherpuzzle.core.exception.InputNotAcceptException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class SingleExpression extends AbstractExpression {
 
     protected List<Element> leftElements;
