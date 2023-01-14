@@ -1,0 +1,45 @@
+
+<section class="vh-100" style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-9 col-xl-7">
+        <div class="card rounded-3">
+          <div class="card-body p-4">
+
+            <h4 class="text-center my-3 pb-3">Cipher - Decipher app</h4>
+
+            <form class="row g-3 justify-content-center align-items-center mb-4 pb-2">
+              <div class="col-6">
+                <div class="form-outline">
+                  <input type="text"
+                         class="form-control"
+                         name="inputPattern"
+                         [(ngModel)]="pattern"
+                         placeholder="Enter Pattern"/>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <button type="button" class="btn btn-outline-primary form-control" (click)="getCipher()">Cipher</button>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <button type="button" class="btn btn-outline-danger form-control" (click)="getDecipher()">Decipher</button>
+                </div>
+              </div>
+            </form>
+
+            <div class="row">
+              <ol class="list-group list-group-numbered list-group-scroll">
+                <li class="list-group-item" *ngFor="let result of results">{{result}}</li>
+              </ol>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
