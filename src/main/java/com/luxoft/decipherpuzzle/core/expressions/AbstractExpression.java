@@ -76,4 +76,15 @@ public abstract class AbstractExpression implements Expression {
         }
         return resultMap;
     }
+
+    protected void checkSameValueExists(Map<Character, Integer> values) throws InputNotAcceptException {
+        boolean[] exists = new boolean[10];
+        for (Integer value : values.values()) {
+            if (exists[value]) {
+                throw new InputNotAcceptException("Duplicated value exists. Value is : " + value);
+            } else {
+                exists[value] = true;
+            }
+        }
+    }
 }

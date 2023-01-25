@@ -40,6 +40,7 @@ public class SingleExpression extends AbstractExpression {
         BigDecimal rightSide;
 
         try {
+            checkSameValueExists(values);
             leftSide = execute(this.leftElements, values);
             rightSide = execute(this.rightElements, values);
         } catch (InputNotAcceptException exception) {
