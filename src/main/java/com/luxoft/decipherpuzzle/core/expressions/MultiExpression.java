@@ -1,7 +1,6 @@
 package com.luxoft.decipherpuzzle.core.expressions;
 
 
-import com.luxoft.decipherpuzzle.core.exception.InputNotAcceptException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -41,7 +40,7 @@ public class MultiExpression extends AbstractExpression {
     }
 
     @Override
-    public String show(Map<Character, Integer> values) throws InputNotAcceptException {
+    public String show(Map<Character, Integer> values) {
         StringBuilder builder = new StringBuilder();
         for (Expression e : this.expressionList) {
             builder.append(e.show(values));
@@ -63,12 +62,14 @@ public class MultiExpression extends AbstractExpression {
     }
 
     @Override
-    public Map<Character, Integer> getChars() {
-        Map<Character, Integer> map = new HashMap<>();
+    public Map<Character, Boolean> getChars() {
+        Map<Character, Boolean> map = new HashMap<>();
         for (Expression e : this.expressionList) {
             e.getChars().forEach((key, value) -> {
                 if (!map.containsKey(key))
                     map.put(key, value);
+                else
+                    map.put(key, map.get(key) || value);
             });
 
         }

@@ -2,7 +2,6 @@ package com.luxoft.decipherpuzzle.core.expressions;
 
 import com.luxoft.decipherpuzzle.core.entity.Element;
 import com.luxoft.decipherpuzzle.core.entity.Operation;
-import com.luxoft.decipherpuzzle.core.exception.InputNotAcceptException;
 import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
@@ -15,13 +14,13 @@ public abstract class AbstractExpression implements Expression {
 
     protected String inputExpression;
 
-    protected Map<Character, Integer> chars;
+    protected Map<Character, Boolean> chars;
 
     public AbstractExpression() {
         this.chars = new HashMap<>();
     }
 
-    protected void foreach(List<Element> elementList, Map<Character, Integer> values, StringBuilder builder) throws InputNotAcceptException {
+    protected void foreach(List<Element> elementList, Map<Character, Integer> values, StringBuilder builder) {
         Element element;
         for (int i = elementList.size() - 1; i >= 0; i--) {
             element = elementList.get(i);
@@ -33,7 +32,7 @@ public abstract class AbstractExpression implements Expression {
         }
     }
 
-    public BigDecimal execute(List<Element> elementList, Map<Character, Integer> values) throws InputNotAcceptException {
+    public BigDecimal execute(List<Element> elementList, Map<Character, Integer> values) {
         BigDecimal result = BigDecimal.ZERO;
         Element element;
         for (int i = elementList.size() - 1; i >= 0; i--) {
@@ -49,14 +48,12 @@ public abstract class AbstractExpression implements Expression {
     }
 
     public void addChars(Character character) {
-        if (chars.containsKey(character)) {
-            chars.put(character, chars.get(character) + 1);
-        } else {
-            chars.put(character, 1);
+        if (!chars.containsKey(character)) {
+            chars.put(character, false);
         }
     }
 
-    public Map<Character, Integer> getChars() {
+    public Map<Character, Boolean> getChars() {
         return this.chars;
     }
 
@@ -64,27 +61,4 @@ public abstract class AbstractExpression implements Expression {
         this.inputExpression = inputExpression;
     }
 
-    public int getMaxInput() {
-        return Integer.parseInt("9".repeat(this.getChars().size()));
-    }
-
-    public Map<Character, Integer> createInput(int input) {
-        Map<Character, Integer> resultMap = new HashMap<>(this.getChars());
-        for (Map.Entry<Character, Integer> item : resultMap.entrySet()) {
-            resultMap.put(item.getKey(), Math.max((input % 10), 0));
-            input = input / 10;
-        }
-        return resultMap;
-    }
-
-    protected void checkSameValueExists(Map<Character, Integer> values) throws InputNotAcceptException {
-        boolean[] exists = new boolean[10];
-        for (Integer value : values.values()) {
-            if (exists[value]) {
-                throw new InputNotAcceptException("Duplicated value exists. Value is : " + value);
-            } else {
-                exists[value] = true;
-            }
-        }
-    }
 }

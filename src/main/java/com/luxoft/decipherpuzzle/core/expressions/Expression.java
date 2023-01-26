@@ -1,23 +1,20 @@
 package com.luxoft.decipherpuzzle.core.expressions;
 
 import com.luxoft.decipherpuzzle.core.entity.OperationType;
-import com.luxoft.decipherpuzzle.core.exception.InputNotAcceptException;
 
 import java.util.Map;
 
 public interface Expression {
 
-    Map<Character, Integer> createInput(int input);
     boolean check(Map<Character, Integer> values);
-    String show(Map<Character, Integer> values) throws InputNotAcceptException;
 
-    int getMaxInput();
+    String show(Map<Character, Integer> values);
 
     void addInputExpression(String expression);
 
     Expression createExpression(String exp);
 
-    Map<Character, Integer> getChars();
+    Map<Character, Boolean> getChars();
 
     boolean support(String expression);
 

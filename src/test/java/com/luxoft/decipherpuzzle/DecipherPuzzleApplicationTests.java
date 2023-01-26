@@ -2,7 +2,6 @@ package com.luxoft.decipherpuzzle;
 
 import com.luxoft.decipherpuzzle.core.Cipher;
 import com.luxoft.decipherpuzzle.core.Decipher;
-import com.luxoft.decipherpuzzle.core.exception.InputNotAcceptException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +21,23 @@ class DecipherPuzzleApplicationTests {
             "xwc-ccc=wcm",
             "xwc+ccc=wcm",
             "hff+hff=pf+pf+pf+hpf",
-            "abc-ca=cd;abd+a=abc"
+            "abc-ca=cd;abd+a=abc",
+            "wbbw+ewcw=bsxq"
     })
-    public void test_decode(String pattern) throws InputNotAcceptException {
+    public void test_decode(String pattern) {
         decipher.decode(pattern);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "xwc-ccc=wcm",
+            "xwc+ccc=wcm",
+            "hff+hff=pf+pf+pf+hpf",
+            "abc-ca=cd;abd+a=abc",
+            "wbbw+ewcw=bsxq"
+    })
+    public void test_decode_with_thread(String pattern) {
+        decipher.decodeThread(pattern);
     }
 
     @ParameterizedTest

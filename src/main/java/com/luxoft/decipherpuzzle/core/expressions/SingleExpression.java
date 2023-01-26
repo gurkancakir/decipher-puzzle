@@ -3,7 +3,6 @@ package com.luxoft.decipherpuzzle.core.expressions;
 import com.luxoft.decipherpuzzle.core.OperationFactory;
 import com.luxoft.decipherpuzzle.core.entity.Element;
 import com.luxoft.decipherpuzzle.core.entity.Variable;
-import com.luxoft.decipherpuzzle.core.exception.InputNotAcceptException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -36,35 +35,36 @@ public class SingleExpression extends AbstractExpression {
     }
 
     public boolean check(Map<Character, Integer> values) {
-        BigDecimal leftSide;
-        BigDecimal rightSide;
 
-        try {
-            checkSameValueExists(values);
-            leftSide = execute(this.leftElements, values);
-            rightSide = execute(this.rightElements, values);
-        } catch (InputNotAcceptException exception) {
-            return false;
-        }
+        BigDecimal leftSide = execute(this.leftElements, values);
+        BigDecimal rightSide = execute(this.rightElements, values);
         return leftSide.compareTo(rightSide) == 0;
     }
 
-    public String show(Map<Character, Integer> values) throws InputNotAcceptException {
+    public String show(Map<Character, Integer> values) {
         StringBuilder formula = new StringBuilder();
-//        formula.append(inputExpression);
-//        formula.append(" => ");
         foreach(leftElements, values, formula);
         formula.append("=");
         foreach(rightElements, values, formula);
         return formula.toString();
     }
 
-    public void addLeftElement(Element variable) {
-        this.leftElements.add(variable);
+    public void addLeftElement(Element element) {
+        if (element instanceof Variable variable) {
+            this.setFirstCharacter(variable.getFirstCharacter());
+        }
+        this.leftElements.add(element);
     }
 
-    public void addRightElement(Element variable) {
-        this.rightElements.add(variable);
+    public void addRightElement(Element element) {
+        if (element instanceof Variable variable) {
+            this.setFirstCharacter(variable.getFirstCharacter());
+        }
+        this.rightElements.add(element);
+    }
+
+    protected void setFirstCharacter(Character character) {
+        this.getChars().put(character, true);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class SingleExpression extends AbstractExpression {
 
         int factor = 1;
         Variable variable = new Variable();
-        for (int i = leftSide.length() -1; i >= 0 ; i--) {
+        for (int i = leftSide.length() - 1; i >= 0; i--) {
             char chr = leftSide.charAt(i);
             if (chr == ' ') continue;
             if (isOperation(chr)) {
@@ -94,7 +94,7 @@ public class SingleExpression extends AbstractExpression {
 
         variable = new Variable();
         factor = 1;
-        for (int i = rightSide.length() -1; i >= 0 ; i--) {
+        for (int i = rightSide.length() - 1; i >= 0; i--) {
             char chr = rightSide.charAt(i);
             if (chr == ' ') continue;
             if (isOperation(chr)) {
